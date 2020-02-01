@@ -9,7 +9,7 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import { mainRouter } from "./routes";
+import { mainRoutes } from "./routes";
 
 render(
   <Router>
@@ -21,7 +21,7 @@ render(
           return <App {...routerProps} />;
         }}
       />
-      {mainRouter.map(route => {
+      {mainRoutes.map(route => {
         return (
           <Route
             key={route.pathname}
