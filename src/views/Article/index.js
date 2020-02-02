@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-02 19:53:01
+ * @LastEditTime : 2020-02-02 20:52:38
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/index.js
@@ -9,6 +9,7 @@
 import React, { Component } from "react";
 import { Card, Button, Table, Tag } from "antd";
 import moment from "moment";
+import XLSX from "xlsx";
 import { getArticle } from "../../http";
 
 // const displayTitle = key => {
@@ -28,7 +29,9 @@ export default class ArticleList extends Component {
       dataSource: [],
       columns: [],
       totle: 0,
-      isLoading: false
+      isLoading: false,
+      offset: 0,
+      limit: 10
     };
   }
 
@@ -83,7 +86,7 @@ export default class ArticleList extends Component {
     this.setState({
       isLoading: true
     });
-    getArticle()
+    getArticle(this.state.offset, this.state.limit)
       .then(res => {
         const columnKeys = Object.keys(res.list[0]);
         const columns = this.createColumns(columnKeys);
@@ -105,6 +108,48 @@ export default class ArticleList extends Component {
       });
   };
 
+  onPageChange = (page, pageSize) => {
+    // console.log(object)
+    this.setState(
+      {
+        offset: page - 1,
+        limit: pageSize
+      },
+      () => {
+        this.getData();
+      }
+    );
+  };
+
+  showSizeChanger = size => {
+    this.setState(
+      {
+        offset: 0,
+        limit: size
+      },
+      () => {
+        this.getData();
+      }
+    );
+  };
+
+  toExcel = () => {
+    const data = [Object.keys(this.state.dataSource[0])];
+    for (let i = 0; i < this.state.dataSource.length; i++) {
+      data.push([
+        this.state.dataSource[i].id,
+        this.state.dataSource[i].title,
+        this.state.dataSource[i].author,
+        this.state.dataSource[i].amount,
+        moment(this.state.dataSource[i].createAt).format("YYYY-MM-DD HH:mm:ss")
+      ]);
+    }
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+    XLSX.writeFile(wb, "文章列表.xlsx");
+  };
+
   componentDidMount() {
     this.getData();
   }
@@ -114,7 +159,17 @@ export default class ArticleList extends Component {
         <Card
           title="文章列表"
           bordered={false}
-          extra={<Button type="primary">导出文章列表</Button>}
+          extra={
+            <Button
+              type="primary"
+              disabled={this.state.dataSource.length === 0}
+              onClick={this.toExcel}
+            >
+              {this.state.dataSource.length === 0
+                ? "文章列表未加载完成,无法导出!"
+                : "导出文章列表"}
+            </Button>
+          }
         >
           <Table
             rowKey={record => record.id}
@@ -122,8 +177,13 @@ export default class ArticleList extends Component {
             columns={this.state.columns}
             loading={this.state.isLoading}
             pagination={{
+              current: this.state.offset / this.state.limit + 1,
               total: this.state.total,
-              hideOnSinglePage: true
+              hideOnSinglePage: true,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              onChange: this.onPageChange,
+              onShowSizeChange: this.showSizeChanger
             }}
           />
         </Card>
