@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-03 21:20:15
+ * @LastEditTime : 2020-02-03 21:38:51
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/Edit.js
@@ -9,12 +9,15 @@
 import React, { Component, createRef } from "react";
 import E from "wangeditor";
 import { Card, Button, Form, Input, DatePicker } from "antd";
+import { getArticleByid } from "../../http";
+import moment from "moment";
 import "./Edit.less";
 @Form.create()
 class Edit extends Component {
   constructor() {
     super();
     this.editorRef = createRef();
+    this.state = {};
   }
   initEditor = () => {
     this.editor = new E(this.editorRef.current);
@@ -28,6 +31,12 @@ class Edit extends Component {
   };
   componentDidMount() {
     this.initEditor();
+    getArticleByid(this.props.match.params.id).then(res => {
+      const { id, ...data } = res;
+      data.createAt = moment(data.createAt);
+      this.props.form.setFieldsValue(data);
+      this.editor.txt.html(data.content);
+    });
   }
   Back = () => {
     this.props.history.go(-1);
@@ -47,6 +56,7 @@ class Edit extends Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        console.log(values.createAt.valueOf())
       }
     });
   };
