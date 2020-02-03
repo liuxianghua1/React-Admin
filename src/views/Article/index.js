@@ -1,16 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-02 20:52:38
+ * @LastEditTime : 2020-02-03 13:39:16
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/index.js
  */
 import React, { Component } from "react";
-import { Card, Button, Table, Tag } from "antd";
+import { Card, Button, Table, Tag, Modal, message } from "antd";
 import moment from "moment";
 import XLSX from "xlsx";
-import { getArticle } from "../../http";
+import { getArticle, deletrArticle } from "../../http";
 
 // const displayTitle = key => {
 
@@ -70,11 +70,16 @@ export default class ArticleList extends Component {
     columns.push({
       title: "操作",
       key: "action",
-      render: () => {
+      render: (text, record) => {
         return (
           <Button.Group size="small">
             <Button type="primary">编辑</Button>
-            <Button type="danger">删除</Button>
+            <Button
+              type="danger"
+              onClick={this.deleteArticle.bind(this, record)}
+            >
+              删除
+            </Button>
           </Button.Group>
         );
       }
@@ -82,6 +87,7 @@ export default class ArticleList extends Component {
     return columns;
   };
 
+  
   getData = () => {
     this.setState({
       isLoading: true
@@ -96,7 +102,6 @@ export default class ArticleList extends Component {
           columns,
           isLoading: false
         });
-        console.log(res);
       })
       .catch(err => {
         console.log(err);
@@ -108,24 +113,27 @@ export default class ArticleList extends Component {
       });
   };
 
+  deleteArticle = record => {
+    Modal.confirm({
+      title: `确定要删除${record.title}吗`,
+      content: "此操作不可逆,请谨慎操作。",
+      onOk() {
+        deletrArticle(record.id)
+          .then(() => {
+            message.success("删除文章成功!");
+            // this.getData = this.getData().bind(this);
+          })
+      }
+    });
+  };
+
+
   onPageChange = (page, pageSize) => {
     // console.log(object)
     this.setState(
       {
         offset: page - 1,
         limit: pageSize
-      },
-      () => {
-        this.getData();
-      }
-    );
-  };
-
-  showSizeChanger = size => {
-    this.setState(
-      {
-        offset: 0,
-        limit: size
       },
       () => {
         this.getData();
@@ -177,13 +185,10 @@ export default class ArticleList extends Component {
             columns={this.state.columns}
             loading={this.state.isLoading}
             pagination={{
-              current: this.state.offset / this.state.limit + 1,
               total: this.state.total,
               hideOnSinglePage: true,
-              showSizeChanger: true,
               showQuickJumper: true,
-              onChange: this.onPageChange,
-              onShowSizeChange: this.showSizeChanger
+              onChange: this.onPageChange
             }}
           />
         </Card>
