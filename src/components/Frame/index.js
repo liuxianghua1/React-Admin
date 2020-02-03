@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-31 19:27:29
- * @LastEditTime : 2020-02-01 10:20:24
+ * @LastEditTime : 2020-02-03 16:33:39
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/components/Frame/index.js
@@ -17,6 +17,8 @@ class Frame extends Component {
     // console.log(this.props)
   };
   render() {
+    const selectedKey = this.props.location.pathname.split('/');
+    selectedKey.length = 3;
     return (
       <Layout style={{minHeight: '100%'}}>
         <Header className="header" style={{ backgroundColor: "white",padding:'0 40px' }}>
@@ -29,7 +31,7 @@ class Frame extends Component {
           <Sider width={200} style={{ background: "#fff" }}>
             <Menu
               mode="inline"
-              selectedKeys={this.props.location.pathname}
+              selectedKeys={selectedKey.join('/')}
               onClick={this.onMenuClick}
               style={{ height: "100%", borderRight: 0 }}
             >

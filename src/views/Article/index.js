@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-03 13:39:16
+ * @LastEditTime : 2020-02-03 16:27:43
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/index.js
  */
 import React, { Component } from "react";
-import { Card, Button, Table, Tag, Modal, message } from "antd";
+import { Card, Button, Table, Tag, Modal, message, Tooltip } from "antd";
 import moment from "moment";
 import XLSX from "xlsx";
 import { getArticle, deletrArticle } from "../../http";
@@ -44,7 +44,11 @@ export default class ArticleList extends Component {
           render: (text, record) => {
             const { amount } = record;
             return (
-              <Tag color={amount > 200 ? "red" : "green"}>{record.amount}</Tag>
+              <Tooltip title={amount > 200 ? "火爆" : "良好"}>
+                <Tag color={amount > 200 ? "red" : "green"}>
+                  {record.amount}
+                </Tag>
+              </Tooltip>
             );
           }
         };
@@ -73,7 +77,9 @@ export default class ArticleList extends Component {
       render: (text, record) => {
         return (
           <Button.Group size="small">
-            <Button type="primary">编辑</Button>
+            <Button type="primary" onClick={this.toEdit.bind(this, record)}>
+              编辑
+            </Button>
             <Button
               type="danger"
               onClick={this.deleteArticle.bind(this, record)}
@@ -87,7 +93,17 @@ export default class ArticleList extends Component {
     return columns;
   };
 
-  
+  toEdit = record => {
+    this.props.history.push(`/admin/article/edit/${record.id}`);
+    // 隐式传参
+    // this.props.history.push({
+    //   pathname: `/admin/article/edit/${record.id}`,
+    //   state: {
+    //     record
+    //   }
+    // });
+  };
+
   getData = () => {
     this.setState({
       isLoading: true
@@ -117,16 +133,14 @@ export default class ArticleList extends Component {
     Modal.confirm({
       title: `确定要删除${record.title}吗`,
       content: "此操作不可逆,请谨慎操作。",
-      onOk() {
-        deletrArticle(record.id)
-          .then(() => {
-            message.success("删除文章成功!");
-            // this.getData = this.getData().bind(this);
-          })
+      onOk: () => {
+        deletrArticle(record.id).then(() => {
+          message.success("删除文章成功!");
+          this.getData();
+        });
       }
     });
   };
-
 
   onPageChange = (page, pageSize) => {
     // console.log(object)
