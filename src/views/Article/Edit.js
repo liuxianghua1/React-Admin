@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-04 10:18:51
+ * @LastEditTime : 2020-02-04 10:47:33
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/Edit.js
@@ -9,7 +9,7 @@
 import React, { Component, createRef } from "react";
 import E from "wangeditor";
 import { Card, Button, Form, Input, DatePicker, Spin, message } from "antd";
-import { getArticleByid, articleEdit } from "../../http";
+import { getArticleByid, articleEdit, articleCreate } from "../../http";
 import moment from "moment";
 import "./Edit.less";
 @Form.create()
@@ -31,23 +31,27 @@ class Edit extends Component {
     };
     this.editor.create();
   };
+
   componentDidMount() {
+    const { id } = this.props.match.params;
     this.initEditor();
-    this.setState({
-      isLoading: true
-    });
-    getArticleByid(this.props.match.params.id)
-      .then(res => {
-        const { id, ...data } = res;
-        data.createAt = moment(data.createAt);
-        this.props.form.setFieldsValue(data);
-        this.editor.txt.html(data.content);
-      })
-      .finally(() => {
-        this.setState({
-          isLoading: false
-        });
+    if (id) {
+      this.setState({
+        isLoading: true
       });
+      getArticleByid(id)
+        .then(res => {
+          const { id, ...data } = res;
+          data.createAt = moment(data.createAt);
+          this.props.form.setFieldsValue(data);
+          this.editor.txt.html(data.content);
+        })
+        .finally(() => {
+          this.setState({
+            isLoading: false
+          });
+        });
+    }
   }
 
   //   Detection = () => {
@@ -60,22 +64,34 @@ class Edit extends Component {
   //   }
 
   handleSubmit = e => {
+    const { id } = this.props.match.params;
     e.preventDefault();
-    this.setState({
-      isLoading: true
-    });
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({
+          isLoading: true
+        });
         const data = Object.assign({}, values, {
           createAt: values.createAt.valueOf()
         });
-        articleEdit(this.props.match.params.id, data).then(() => {
-          this.setState({
-            isLoading: false
+        if (id) {
+          articleEdit(id, data).then(() => {
+            this.setState({
+              isLoading: false
+            });
+            message.success("保存成功");
+            this.props.history.push("/admin/article");
           });
-          message.success("保存成功");
-          this.props.history.push("/admin/article");
-        });
+        } else {
+          //   console.log("保存");
+          articleCreate(data).then(res => {
+            this.setState({
+              isLoading: false
+            });
+            message.success("发布成功");
+            this.props.history.push("/admin/article");
+          });
+        }
       }
     });
   };
@@ -86,7 +102,7 @@ class Edit extends Component {
     return (
       <Card
         // title={title}
-        title="文章编辑"
+        title={this.props.match.params.id ? "文章编辑" : "发布文章"}
         bordered={false}
         extra={
           <Button type="danger" onClick={this.props.history.goBack}>

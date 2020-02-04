@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-03 21:26:10
+ * @LastEditTime : 2020-02-04 10:36:25
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/index.js
@@ -182,15 +182,22 @@ export default class ArticleList extends Component {
           title="文章列表"
           bordered={false}
           extra={
-            <Button
-              type="primary"
-              disabled={this.state.dataSource.length === 0}
-              onClick={this.toExcel}
-            >
-              {this.state.dataSource.length === 0
-                ? "文章列表未加载完成,无法导出!"
-                : "导出文章列表"}
-            </Button>
+            <Button.Group>
+              <Button
+                onClick={() => {
+                  this.props.history.push("/admin/article/create");
+                }}
+              >
+                发布文章
+              </Button>
+              <Button
+                type="primary"
+                disabled={this.state.dataSource.length === 0}
+                onClick={this.toExcel}
+              >
+                导出文章
+              </Button>
+            </Button.Group>
           }
         >
           <Table
