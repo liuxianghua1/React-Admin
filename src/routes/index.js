@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:24:27
- * @LastEditTime : 2020-02-01 09:45:18
+ * @LastEditTime : 2020-02-04 10:20:58
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/routes/index.js
@@ -44,6 +44,10 @@ export const adminRoutes = [
   },
   {
     pathname: "/admin/article/edit/:id",
+    component: ArticleEdit
+  },
+  {
+    pathname: "/admin/article/create",
     component: ArticleEdit
   },
   {

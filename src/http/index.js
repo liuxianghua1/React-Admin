@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-02-02 11:55:17
- * @LastEditTime : 2020-02-03 21:30:10
+ * @LastEditTime : 2020-02-04 10:02:40
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/http/index.js
@@ -39,11 +39,16 @@ export const getArticle = (offset = 0, limited = 10) => {
 };
 
 // 通过id删除文章
-export const deletrArticle = (id) => {
-  return http.post(`api/v1/articleDelete/${id}`)
-}
+export const deletrArticle = id => {
+  return http.post(`api/v1/articleDelete/${id}`);
+};
 
 // 通过id获取文章
-export const getArticleByid = (id) => {
-  return http.post(`/api/v1/article/${id}`)
-}
+export const getArticleByid = id => {
+  return http.post(`/api/v1/article/${id}`);
+};
+
+// 修改文章
+export const articleEdit = (id,data) => {
+  return http.post(`/api/v1/articleEdit/${id}`,data);
+};
