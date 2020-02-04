@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:06:52
- * @LastEditTime : 2020-02-02 12:40:40
+ * @LastEditTime : 2020-02-04 17:01:53
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/index.js
@@ -40,5 +40,17 @@ const ArticleEdit = Loadable({
   loader: () => import("./Article/Edit"),
   loading: Loading
 });
+const Notifications = Loadable({
+  loader: () => import("./Notifications"),
+  loading: Loading
+});
 
-export { Dashboard, Login, NotFound, Settings, ArticleList, ArticleEdit };
+export {
+  Dashboard,
+  Login,
+  NotFound,
+  Settings,
+  ArticleList,
+  ArticleEdit,
+  Notifications
+};

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-02-02 11:55:17
- * @LastEditTime : 2020-02-04 10:43:48
+ * @LastEditTime : 2020-02-04 15:59:53
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/http/index.js
@@ -56,4 +56,9 @@ export const articleEdit = (id, data) => {
 // 发布文章
 export const articleCreate = data => {
   return http.post("/api/v1/articleCreate", data);
+};
+
+// 获取浏览量
+export const getArticleAmount = () => {
+  return http.post('/api/v1/articleAmount');
 };
