@@ -1,11 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-02-04 18:33:46
- * @LastEditTime : 2020-02-04 19:13:42
+ * @LastEditTime : 2020-02-05 09:54:10
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/reducers/notification.js
  */
+import actionTypes from "../actions/actionTypes";
 const initState = {
   isLoading: false,
   list: [
@@ -31,10 +32,22 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
-    // case value:
-
-    //     break;
-
+    case actionTypes.MARK_NOTIFICATION_AS_READ_BY_ID:
+      const newList = state.list.map(item => {
+        if (item.id === action.payload.id) {
+          item.hasRead = true;
+        }
+        return item;
+      });
+      return { ...state, list: newList };
+    case actionTypes.MARK_ALL_NOTIFICATION_AS_READ:
+      return {
+        ...state,
+        list: state.list.map(item => {
+          item.hasRead = true;
+          return item;
+        })
+      };
     default:
       // break;
       return state;

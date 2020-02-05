@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-31 19:27:29
- * @LastEditTime : 2020-02-04 19:15:09
+ * @LastEditTime : 2020-02-05 09:46:06
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/components/Frame/index.js
@@ -14,7 +14,9 @@ const { Header, Content, Sider } = Layout;
 
 const mapState = state => {
   return {
-    notificationCount:state.notification.list.filter(item => item.hasRead===false).length
+    notificationCount: state.notification.list.filter(
+      item => item.hasRead === false
+    ).length
   };
 };
 
@@ -27,10 +29,10 @@ class Frame extends Component {
   onDropdownMenuClick = ({ key }) => {
     this.props.history.push(key);
   };
-  menu = (
+  menu = () => (
     <Menu onClick={this.onDropdownMenuClick}>
       <Menu.Item key="/admin/notifications">
-        <Badge count={this.props.notificationCount} offset={[10]}> 
+        <Badge count={this.props.notificationCount} offset={[10]}>
           通知中心
         </Badge>
       </Menu.Item>
@@ -41,7 +43,6 @@ class Frame extends Component {
   render() {
     const selectedKey = this.props.location.pathname.split("/");
     selectedKey.length = 3;
-    console.log(this.props)
     return (
       <Layout style={{ minHeight: "100%" }}>
         <Header
@@ -50,7 +51,7 @@ class Frame extends Component {
         >
           <div style={{ display: "flex" }}>
             <span style={{ fontSize: "25px", flex: 1 }}>极简平台</span>
-            <Dropdown overlay={this.menu}>
+            <Dropdown overlay={this.menu()}>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Avatar src="https://img2.woyaogexing.com/2020/01/26/1360c4ff104946028080570ae0426312!400x400.webp" />
                 <span> 刘翔華</span>
