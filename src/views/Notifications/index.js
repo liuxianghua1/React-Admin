@@ -1,22 +1,23 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:18:04
- * @LastEditTime : 2020-02-05 09:50:38
+ * @LastEditTime : 2020-02-05 10:03:46
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Settings/index.js
  */
 import React, { Component } from "react";
-import { Card, Button, List, Avatar, Badge } from "antd";
+import { Card, Button, List, Avatar, Badge,Spin } from "antd";
 import { connect } from "react-redux";
 import {
   markNotificationAsReadByid,
   markAllNotificationAsRead
 } from "../../actions/notifications";
 const mapState = state => {
-  const { list } = state.notification;
+  const { list, isLoading } = state.notification;
   return {
-    list
+    list,
+    isLoading
   };
 };
 
@@ -25,6 +26,7 @@ class Notifications extends Component {
   render() {
     return (
       <div>
+        <Spin spinning={this.props.isLoading} tip="正在加载中...">
         <Card
           title="通知中心"
           bordered={false}
@@ -64,6 +66,7 @@ class Notifications extends Component {
             )}
           />
         </Card>
+        </Spin>
       </div>
     );
   }

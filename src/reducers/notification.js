@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-02-04 18:33:46
- * @LastEditTime : 2020-02-05 09:54:10
+ * @LastEditTime : 2020-02-05 10:16:38
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/reducers/notification.js
@@ -32,6 +32,24 @@ const initState = {
 
 export default (state = initState, action) => {
   switch (action.type) {
+    case actionTypes.RECIVED_NOTIFIACTIONS:
+      return {
+        ...state,
+        list: action.payload.list
+      };
+
+    case actionTypes.START_MARK_AS_READ:
+      return {
+        ...state,
+        isLoading: true
+      };
+
+    case actionTypes.FINISH_MARK_AS_READ:
+      return {
+        ...state,
+        isLoading: false
+      };
+
     case actionTypes.MARK_NOTIFICATION_AS_READ_BY_ID:
       const newList = state.list.map(item => {
         if (item.id === action.payload.id) {
@@ -40,6 +58,7 @@ export default (state = initState, action) => {
         return item;
       });
       return { ...state, list: newList };
+
     case actionTypes.MARK_ALL_NOTIFICATION_AS_READ:
       return {
         ...state,
@@ -48,6 +67,7 @@ export default (state = initState, action) => {
           return item;
         })
       };
+
     default:
       // break;
       return state;

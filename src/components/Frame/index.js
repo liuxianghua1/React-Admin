@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-31 19:27:29
- * @LastEditTime : 2020-02-05 09:46:06
+ * @LastEditTime : 2020-02-05 10:14:05
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/components/Frame/index.js
@@ -10,6 +10,7 @@ import React, { Component } from "react";
 import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from "antd";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { getNotifiactionList } from "../../actions/notifications";
 const { Header, Content, Sider } = Layout;
 
 const mapState = state => {
@@ -20,9 +21,12 @@ const mapState = state => {
   };
 };
 
-@connect(mapState)
+@connect(mapState, { getNotifiactionList })
 @withRouter
 class Frame extends Component {
+  componentDidMount() {
+    this.props.getNotifiactionList();
+  }
   onMenuClick = ({ key }) => {
     this.props.history.push(key);
   };
