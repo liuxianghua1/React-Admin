@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-02-05 09:33:39
- * @LastEditTime : 2020-02-05 10:15:00
+ * @LastEditTime : 2020-02-05 17:04:19
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/actions/actionTypes.js
@@ -12,4 +12,7 @@ export default {
   START_MARK_AS_READ: "START_MARK_AS_READ",
   FINISH_MARK_AS_READ: "FINISH_MARK_AS_READ",
   RECIVED_NOTIFIACTIONS: "RECIVED_NOTIFIACTIONS",
+  START_LOGIN: "START_LOGIN",
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  LOGIN_FAILED: "LOGIN_FAILED"
 };

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-26 16:35:54
- * @LastEditTime : 2020-02-04 18:38:20
+ * @LastEditTime : 2020-02-05 16:53:27
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/index.js
@@ -28,10 +28,7 @@ render(
         <Switch>
           <Route
             path="/admin"
-            render={routerProps => {
-              //   权限 需要登录才能访问/Admin页面
-              return <App {...routerProps} />;
-            }}
+            component={App}
           />
           {mainRoutes.map(route => {
             return (

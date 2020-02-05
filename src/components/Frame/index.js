@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-31 19:27:29
- * @LastEditTime : 2020-02-05 10:14:05
+ * @LastEditTime : 2020-02-05 19:24:38
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/components/Frame/index.js
@@ -11,17 +11,20 @@ import { Layout, Menu, Icon, Dropdown, Avatar, Badge } from "antd";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { getNotifiactionList } from "../../actions/notifications";
+import { logout } from "../../actions/user";
 const { Header, Content, Sider } = Layout;
 
 const mapState = state => {
   return {
     notificationCount: state.notification.list.filter(
       item => item.hasRead === false
-    ).length
+    ).length,
+    avatar: state.users.avatar,
+    displayName: state.users.displayName
   };
 };
 
-@connect(mapState, { getNotifiactionList })
+@connect(mapState, { getNotifiactionList, logout })
 @withRouter
 class Frame extends Component {
   componentDidMount() {
@@ -41,7 +44,14 @@ class Frame extends Component {
         </Badge>
       </Menu.Item>
       <Menu.Item key="/admin/settings">个人设置</Menu.Item>
-      <Menu.Item key="/login">退出</Menu.Item>
+      <Menu.Item
+        key="/login"
+        onClick={() => {
+          this.props.logout();
+        }}
+      >
+        退出
+      </Menu.Item>
     </Menu>
   );
   render() {
@@ -57,8 +67,8 @@ class Frame extends Component {
             <span style={{ fontSize: "25px", flex: 1 }}>极简平台</span>
             <Dropdown overlay={this.menu()}>
               <div style={{ display: "flex", alignItems: "center" }}>
-                <Avatar src="https://img2.woyaogexing.com/2020/01/26/1360c4ff104946028080570ae0426312!400x400.webp" />
-                <span> 刘翔華</span>
+                <Avatar src={this.props.avatar} />
+                <span> {this.props.displayName}</span>
                 <Badge count={this.props.notificationCount} offset={[-55, -10]}>
                   <Icon type="down" />
                 </Badge>
