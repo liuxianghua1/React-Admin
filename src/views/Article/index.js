@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:16:54
- * @LastEditTime : 2020-02-04 10:36:25
+ * @LastEditTime : 2020-02-05 19:55:27
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/Article/index.js
@@ -112,6 +112,7 @@ export default class ArticleList extends Component {
       .then(res => {
         const columnKeys = Object.keys(res.list[0]);
         const columns = this.createColumns(columnKeys);
+        if (this.updater.isMounted(this)) return;
         this.setState({
           total: res.total,
           dataSource: res.list,
@@ -123,6 +124,7 @@ export default class ArticleList extends Component {
         console.log(err);
       })
       .finally(() => {
+        if (this.updater.isMounted(this)) return;
         this.setState({
           isLoading: false
         });

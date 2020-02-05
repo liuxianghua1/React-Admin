@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-31 19:27:29
- * @LastEditTime : 2020-02-05 19:24:38
+ * @LastEditTime : 2020-02-05 20:04:33
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/components/Frame/index.js
@@ -43,7 +43,7 @@ class Frame extends Component {
           通知中心
         </Badge>
       </Menu.Item>
-      <Menu.Item key="/admin/settings">个人设置</Menu.Item>
+      <Menu.Item key="/admin/Profile">个人设置</Menu.Item>
       <Menu.Item
         key="/login"
         onClick={() => {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-02-05 16:48:06
- * @LastEditTime : 2020-02-05 19:15:37
+ * @LastEditTime : 2020-02-05 19:33:06
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/reducers/users.js
@@ -41,7 +41,8 @@ export default (state = initState, action) => {
         displayName: "",
         avatar: "",
         isLogin: false,
-        isLoading: false
+        isLoading: false,
+        role:''
       };
     default:
       return state;

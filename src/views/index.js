@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-01-28 16:06:52
- * @LastEditTime : 2020-02-04 17:01:53
+ * @LastEditTime : 2020-02-05 20:03:22
  * @LastEditors  : Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /react-admin/src/views/index.js
@@ -44,6 +44,14 @@ const Notifications = Loadable({
   loader: () => import("./Notifications"),
   loading: Loading
 });
+const NoAuth = Loadable({
+  loader: () => import("./NoAuth"),
+  loading: Loading
+});
+const Profile = Loadable({
+  loader: () => import("./Profile"),
+  loading: Loading
+});
 
 export {
   Dashboard,
@@ -52,5 +60,7 @@ export {
   Settings,
   ArticleList,
   ArticleEdit,
-  Notifications
+  Notifications,
+  NoAuth,
+  Profile
 };
